@@ -25,7 +25,6 @@ class Prova {
     async insereProva(req, res) {
         try {
             const { codigo, nome} = req.body
-            console.log("body", req.body)
             const client = new Client({
                 host: "localhost",
                 user: "postgres",

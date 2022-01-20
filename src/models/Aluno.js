@@ -11,15 +11,9 @@ class Aluno {
                 password: "Proibido1",
                 database: "db_sala"
             });
-
             const { id } = req.params
-            console.log("id", id)
-
             await client.connect();
             const resultado = await client.query(`select * from aluno where cod_aluno = ${id}`)
-            console.log("id", id)
-
-
             return res.status(200).json(resultado.rows)
         } catch (error) {
             return res.status(500).json({ Error: error })
@@ -29,7 +23,6 @@ class Aluno {
     async insereAluno(req, res) {
         try {
             const { codigo, nome, telefone, email } = req.body
-            console.log("body", req.body)
             const client = new Client({
                 host: "localhost",
                 user: "postgres",

@@ -44,7 +44,6 @@ class AlunoProva {
     async insereAlunoProva(req, res) {
         try {
             const { codigo, aluno, prova, nota } = req.body
-            console.log("body", req.body)
             const client = new Client({
                 host: "localhost",
                 user: "postgres",
