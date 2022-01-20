@@ -13,26 +13,31 @@ class AlunoProva {
                 database: "db_sala"
             });
 
-            const { id, idProva } = req.params
-
+            const { id } = req.params
             await client.connect();
-            const prova = await client.query(`select * from alunoprova where cod_aluno = ${id}`)
 
-            let valorTotalNotas = 0;
+            if (id) {
+                const prova = await client.query(`select * from alunoprova where cod_aluno = ${id}`)
+                let valorTotalNotas = 0;
 
-            for (var i = 0; i < prova.rows.length; i++) {
-                valorTotalNotas = (valorTotalNotas + prova.rows[i].nota);
-            }
+                for (var i = 0; i < prova.rows.length; i++) {
+                    valorTotalNotas = (valorTotalNotas + prova.rows[i].nota);
+                }
 
-            const totalDeProvasAplicadas = prova.rows.length;
-            const mediaAluno = (valorTotalNotas / totalDeProvasAplicadas)
+                const totalDeProvasAplicadas = prova.rows.length;
+                const mediaAluno = (valorTotalNotas / totalDeProvasAplicadas)
 
-            if (mediaAluno > 70) {
-                return res.status(200).json('Aluno Aprovado!')
-            } else if (mediaAluno <= 60 && mediaAluno >= 40) {
-                return res.status(200).json('Aluno em Recuperação!')
+                if (mediaAluno > 70) {
+                    return res.status(200).json('Aluno Aprovado!')
+                } else if (mediaAluno <= 60 && mediaAluno >= 40) {
+                    return res.status(200).json('Aluno em Recuperação!')
+                } else {
+                    return res.status(200).json('Aluno Reprovado!')
+                }
+
             } else {
-                return res.status(200).json('Aluno Reprovado!')
+                const prova = await client.query("select * from alunoprova")
+                return res.status(200).json(prova.rows)
             }
 
         } catch (error) {
